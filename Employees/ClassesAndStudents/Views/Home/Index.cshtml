@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Getting started</h2>
+            <p>
+                Come in to the Employees Application.
+            </p>
+        </div>
+    </div>
+    <div class="row" ng-app="EmpApp">
+        <div class="col-md-10">
+            <h2>Employees</h2>
+            <div ng-controller="employeeCtrl as $ctrl">
+
+                <button type="button" ng-click="$ctrl.addEmployeeItem()" class="btn btn-sm btn-success">
+                    <i class="glyphicon glyphicon-plus">
+                    </i> Add a new employee
+                </button>
+                <table st-safe-src="$ctrl.rowEmployeeCollection" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Employee Name</th>
+                            <th>Job Title</th>
+                            <th>Employment Date</th>
+                            <th>Rate</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in $ctrl.rowEmployeeCollection">
+                            <td>{{row.employeeName | uppercase}}</td>
+                            <td>{{row.jobTitleEntity.jobTitle}}</td>
+                            <td>{{ row.date | date: "yyyy-MM-dd"}}</td>
+                            <td>{{row.rate}}</td>
+                            <!--<td>
+                                <button type="button" ng-click="$ctrl.selectRow(row)" class="btn btn-sm btn-info">
+                                    <i class="glyphicon glyphicon-play-circle">
+                                        Select
+                                    </i>
+                                </button>
+                            </td>-->
+                            <!--<td>
+                                <button type="button" ng-click="$ctrl.editRow(row)" class="btn btn-sm btn-primary">
+                                    <i class="glyphicon glyphicon-edit">
+                                        Edit
+                                    </i>
+                                </button>
+                            </td>-->
+                            <td>
+                                <button type="button" ng-click="$ctrl.removeRow(row)" class="btn btn-sm btn-danger">
+                                    <i class="glyphicon glyphicon-remove-circle">
+                                        Delete
+                                    </i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <script type="text/ng-template" id="myModalContent.html">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modal-title">Create New employee!</h3>
+                    </div>
+                    <div class="modal-body" id="modal-body">
+                        <label>New Employee Name:</label><input type="text" ng-model="$ctrl.newEmployeeName" class="form-control" />
+                        <label>New Job Title:</label>
+                        <select placeholder="" ng-options="value.id as value.jobTitle for value in $ctrl.optionsTitles track by value.id" ng-model="$ctrl.newEmployeeJobTitleId">
+                            <option value="" disabled selected style=""> Choose Title (required):</option>
+                        </select><br/>
+                        <label>New Employment Date:</label><input type="date" ng-model="$ctrl.newEmployeeDate" class="form-control" />
+                        <label>New Employee Rate:</label><input type="text" ng-model="$ctrl.newEmployeeRate" class="form-control" />
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+                        <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+                    </div>
+                </script>
+                <script type="text/ng-template" id="myDeleteContent.html">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modal-title">Delete?</h3>
+                    </div>
+                    <div class="modal-body" id="modal-body">
+                        {{ $ctrl.selectedEmployeeName }}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="button" ng-click="$ctrl.removeOk()">OK</button>
+                        <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+                    </div>
+                </script>
+            </div>
+
+        </div>
+        <div class="col-md-2">
+            <h2>Copyright</h2>
+            <p>Developed by Sergey Pogosbekov</p>
+            <p><a class="btn btn-default" href="mailto:trinity.infoman@gmail.com">Learn more &raquo;</a></p>
+        </div>
+    </div>
+</div>
+@section scripts {
+    @Scripts.Render("~/Scripts/angular.js")
+    <script src="~/Scripts/smart-table.min.js"></script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+    @Scripts.Render("~/app/employees-controller.js")
+}
